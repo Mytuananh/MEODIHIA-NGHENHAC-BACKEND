@@ -1,28 +1,34 @@
 package com.example.meodihia_backend.service.user;
 
 import com.example.meodihia_backend.model.User;
+import com.example.meodihia_backend.repository.IUserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 @Service
 public class UserService implements IUserService{
+
+    @Autowired
+    private IUserRepository userRepository;
+
     @Override
     public Optional<User> findByUsername(String name) {
-        return Optional.empty();
+        return userRepository.findByUsername(name);
     }
 
     @Override
     public Boolean existsByUsername(String username) {
-        return null;
+        return userRepository.existsByUsername(username);
     }
 
     @Override
     public Boolean existsByEmail(String email) {
-        return null;
+        return userRepository.existsByEmail(email);
     }
 
     @Override
     public User save(User user) {
-        return null;
+        return userRepository.save(user);
     }
 }
