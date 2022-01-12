@@ -11,30 +11,25 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class SongService implements ISongService {
-@Autowired
-private ISongRepository songRepository;
+public class SongService implements ISongService{
+    @Autowired
+    private ISongRepository songRepository;
     @Override
     public List<Song> findAll() {
         return songRepository.findAll();
     }
-
     @Override
     public Page<Song> findAll(Pageable pageable) {
         return songRepository.findAll(pageable);
     }
-
     @Override
     public void deleteById(Long id) {
         songRepository.deleteById(id);
-
     }
-
     @Override
     public Song save(Song song) {
         return songRepository.save(song);
     }
-
     @Override
     public Optional<Song> findById(Long id) {
         return songRepository.findById(id);
