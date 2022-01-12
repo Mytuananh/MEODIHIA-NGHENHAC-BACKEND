@@ -1,15 +1,13 @@
 package com.example.meodihia_backend.controller;
 
-import com.example.meodihia_backend.dto.request.ChangeFile;
-import com.example.meodihia_backend.dto.request.ChangeUser;
-import com.example.meodihia_backend.dto.request.SignInForm;
-import com.example.meodihia_backend.dto.request.SignUpForm;
+import com.example.meodihia_backend.dto.request.*;
 import com.example.meodihia_backend.dto.response.JwtResponse;
 import com.example.meodihia_backend.dto.response.ResponeMessage;
 import com.example.meodihia_backend.model.Role;
 import com.example.meodihia_backend.model.RoleName;
 import com.example.meodihia_backend.model.User;
 import com.example.meodihia_backend.security.jwt.JwtProvider;
+import com.example.meodihia_backend.security.jwt.JwtTokenFilter;
 import com.example.meodihia_backend.security.userprincal.UserDetailServices;
 import com.example.meodihia_backend.security.userprincal.UserPrinciple;
 import com.example.meodihia_backend.service.role.RoleService;
@@ -21,10 +19,12 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.HashSet;
 import java.util.Set;
@@ -94,9 +94,9 @@ public class AuthController {
     }
 
     @PutMapping("/change-avatar")
-    public ResponseEntity<?> updateAvatar(@RequestBody ChangeFile changeFile){
+    public ResponseEntity<?> updateAvatar(@RequestBody ChangeFile changeFile) {
         User user = userDetailServices.getCurrentUser();
-        if(user.getUsername().equals("Anonymous")){
+        if (user.getUsername().equals("Anonymous")) {
             return new ResponseEntity<>(new ResponeMessage("Please login!"), HttpStatus.OK);
         }
         user.setAvatar(changeFile.getFile());
@@ -108,7 +108,7 @@ public class AuthController {
     @PutMapping("/change-profile")
     public ResponseEntity<?> editProfile(@RequestBody ChangeUser changeUser) {
         User user = userDetailServices.getCurrentUser();
-        if(user.getUsername().equals("Anonymous")){
+        if (user.getUsername().equals("Anonymous")) {
             return new ResponseEntity<>(new ResponeMessage("Please login!"), HttpStatus.OK);
         }
         user.setFullName(changeUser.getFullName());
@@ -118,5 +118,28 @@ public class AuthController {
         user.setAvatar(changeUser.getAvatar());
         userService.save(user);
         return new ResponseEntity<>(new ResponeMessage("yes"), HttpStatus.OK);
+    }
+
+    @PutMapping("/change-password")
+    public ResponseEntity<?> changePassword(HttpServletRequest request, @Valid @RequestBody ChangePassword changePassword){
+        String jwt = JwtTokenFilter.getJwt(request);
+        String username = jwtProvider.getUerNameFromToken(jwt);
+        User user;
+        try {
+            user = userService.findByUsername(username).orElseThrow(()-> new UsernameNotFoundException("User Not Found with -> username"+username));
+            boolean matches = passwordEncoder.matches(changePassword.getOldPassword(), user.getPassword());
+            if(changePassword.getNewPassword() != null){
+                if(matches){
+                    user.setPassword(passwordEncoder.encode(changePassword.getNewPassword()));
+                    user.setRe_password(passwordEncoder.encode(changePassword.getRe_newPassword()));
+                    userService.save(user);
+                } else {
+                    return new ResponseEntity<>(new ResponeMessage("no"), HttpStatus.OK);
+                }
+            }
+            return new ResponseEntity<>(new ResponeMessage("yes"), HttpStatus.OK);
+        } catch (UsernameNotFoundException exception){
+            return new ResponseEntity<>(new ResponeMessage(exception.getMessage()), HttpStatus.NOT_FOUND);
+        }
     }
 }
