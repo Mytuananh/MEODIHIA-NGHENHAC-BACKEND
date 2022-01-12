@@ -10,6 +10,4 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @CrossOrigin("*")
 @RequestMapping("/song")
 public class SongController {
-
-
 }
