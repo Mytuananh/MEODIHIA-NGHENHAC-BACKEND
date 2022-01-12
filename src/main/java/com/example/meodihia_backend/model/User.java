@@ -42,7 +42,6 @@ public class User {
     @Size(min = 3, max = 60)
     private String fullName;
 
-    @NaturalId
     @Size(max = 50)
     @Email
     private String email;
@@ -57,16 +56,15 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),inverseJoinColumns = @JoinColumn(name = "role_id"))
     Set<Role> roles = new HashSet<>();
 
-    public User(  @NotBlank @Size(min = 3, max = 50)String fullName,
+    public User(
                   @NotBlank @Size(min = 3, max = 50)String username,
                   @NotBlank @Size(min = 3, max = 50) String phoneNumber,
                   @NotBlank @Size(min = 6, max = 100)String encode,
                   String avatar) {
-        this.fullName = fullName;
         this.username = username;
         this.phoneNumber = phoneNumber;
         this.password = encode;
-        this.re_password = encode;
+        this.re_password = this.password;
         this.avatar =avatar;
     }
 
