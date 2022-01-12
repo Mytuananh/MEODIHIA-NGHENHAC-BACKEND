@@ -13,10 +13,10 @@ public class SignUpForm {
     public SignUpForm() {
     }
 
-    public SignUpForm(String username, String password, String re_password, String phoneNumber, String avatar, Set<String> roles) {
+    public SignUpForm(String username, String password, String phoneNumber, String avatar, Set<String> roles) {
         this.username = username;
         this.password = password;
-        this.re_password = re_password;
+        this.re_password = this.password;
         this.phoneNumber = phoneNumber;
         this.avatar = avatar;
         this.roles = roles;
