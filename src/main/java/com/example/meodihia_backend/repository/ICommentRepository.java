@@ -1,10 +1,10 @@
 package com.example.meodihia_backend.repository;
 
-import com.example.meodihia_backend.model.Song;
+import com.example.meodihia_backend.model.Comment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ISongRepository extends JpaRepository<Song,Long>{
-    Iterable<Song> findAllByUser_Id(Long id);
+public interface ICommentRepository extends JpaRepository<Comment,Long> {
+
 }
