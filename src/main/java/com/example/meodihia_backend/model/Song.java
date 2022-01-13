@@ -32,10 +32,10 @@ public class Song {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "song", orphanRemoval = true)
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Likes> likesList = new ArrayList<>();
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "song", orphanRemoval = true)
+      @OneToMany(cascade = CascadeType.ALL, mappedBy = "song", orphanRemoval = true)
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Comment> commentList;
-    @ManyToMany(fetch = FetchType.LAZY, targetEntity = Playlist.class)
+      @ManyToMany(fetch = FetchType.LAZY, targetEntity = Playlist.class)
     @Fetch(value = FetchMode.SUBSELECT)
     private List<Playlist> playlists;
 }
