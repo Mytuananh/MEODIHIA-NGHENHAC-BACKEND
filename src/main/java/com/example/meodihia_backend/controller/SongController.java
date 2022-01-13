@@ -113,6 +113,14 @@ public class SongController {
         return new ResponseEntity<>(songPage, HttpStatus.OK);
     }
 
+    @GetMapping("/song-list")
+    public ResponseEntity<?> showListSongNew() {
+        List<Song> songList = songService.findAll();
+        if (songList.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(songList, HttpStatus.OK);
+    }
 
 
 }
