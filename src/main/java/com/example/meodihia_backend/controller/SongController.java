@@ -1,12 +1,16 @@
 package com.example.meodihia_backend.controller;
 
+import com.example.meodihia_backend.dto.dto.CommentDto;
 import com.example.meodihia_backend.dto.response.ResponeMessage;
+import com.example.meodihia_backend.model.Comment;
 import com.example.meodihia_backend.model.Song;
 import com.example.meodihia_backend.model.User;
 import com.example.meodihia_backend.security.userprincal.UserDetailServices;
+import com.example.meodihia_backend.service.comment.CommentService;
 import com.example.meodihia_backend.service.song.SongService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -24,6 +28,8 @@ public class SongController {
     UserDetailServices userDetailServices;
     @Autowired
     SongService songService;
+    @Autowired
+    CommentService commentService;
     @GetMapping("/list-song")
     public ResponseEntity<?> pageSong(@PageableDefault(sort = "name", direction = Sort.Direction.ASC)Pageable pageable){
         Page<Song> songPage = songService.findAll(pageable);
@@ -72,6 +78,30 @@ public class SongController {
         song1.setMusician(song.getMusician());
         songService.save(song1);
         return new ResponseEntity<>(new ResponeMessage("Done Edit!"), HttpStatus.OK);
+    }
+
+    @GetMapping("/find-song-by-name/{name}")
+    public ResponseEntity<?> findSongByName(@PathVariable("name") String name){
+        Pageable pageable = PageRequest.of(0,10,Sort.by("id").descending());
+        Page<Song> songPage = songService.findSongByNameContaining(name,pageable);
+        List<Song> list = songPage.getContent();
+        return new ResponseEntity<>(list,HttpStatus.OK);
+    }
+
+    @PostMapping("/comment")
+    public ResponseEntity<?>createCommentForSong(@RequestBody CommentDto comment){
+        Comment newComment = new Comment();
+        User user = userDetailServices.getCurrentUser();
+        if(user.getUsername().equals("Anonymous")){
+            return new ResponseEntity<>(new ResponeMessage("Please login!"), HttpStatus.OK);
+        }
+        Song song =songService.findById(comment.getIdSong()).get();
+        String text = comment.getText();
+        newComment.setUser(user);
+        newComment.setSong(song);
+        newComment.setText(text);
+        commentService.save(newComment);
+        return new ResponseEntity<>(new ResponeMessage("Post comment successfull"),HttpStatus.OK);
     }
 }
 
