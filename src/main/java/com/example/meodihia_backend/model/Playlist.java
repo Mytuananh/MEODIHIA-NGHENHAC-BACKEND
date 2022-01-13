@@ -31,12 +31,12 @@ public class Playlist {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "playlist", orphanRemoval = true)
     @LazyCollection(LazyCollectionOption.FALSE)
-    @JsonManagedReference
+
     private List<Likes> likesList = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "playlist", orphanRemoval = true)
     @LazyCollection(LazyCollectionOption.FALSE)
-    @JsonManagedReference
+
     private List<Comment> commentList;
 
     @ManyToMany(fetch = FetchType.LAZY)

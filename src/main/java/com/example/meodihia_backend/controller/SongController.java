@@ -90,18 +90,30 @@ public class SongController {
 
     @PostMapping("/comment")
     public ResponseEntity<?>createCommentForSong(@RequestBody CommentDto comment){
-        Comment newComment = new Comment();
         User user = userDetailServices.getCurrentUser();
         if(user.getUsername().equals("Anonymous")){
             return new ResponseEntity<>(new ResponeMessage("Please login!"), HttpStatus.OK);
         }
+        Comment newComment = new Comment();
         Song song =songService.findById(comment.getIdSong()).get();
         String text = comment.getText();
         newComment.setUser(user);
         newComment.setSong(song);
         newComment.setText(text);
         commentService.save(newComment);
-        return new ResponseEntity<>(new ResponeMessage("Post comment successfull"),HttpStatus.OK);
+        return new ResponseEntity<>(new ResponeMessage("Post comment successfully"),HttpStatus.OK);
     }
+
+    @GetMapping("/show-song-by-count")
+    public ResponseEntity<?> showSongByCount(@PageableDefault(sort = "count", direction = Sort.Direction.DESC)Pageable pageable){
+        Page<Song> songPage = songService.findAll(pageable);
+        if(songPage.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(songPage, HttpStatus.OK);
+    }
+
+
+
 }
 
