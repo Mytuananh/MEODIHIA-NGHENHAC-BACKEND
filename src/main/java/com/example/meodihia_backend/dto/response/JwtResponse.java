@@ -51,10 +51,6 @@ public class JwtResponse {
         return username;
     }
 
-    public void setUsername(String fullName) {
-        this.username = fullName;
-    }
-
     public Collection<? extends GrantedAuthority> getRoles() {
         return roles;
     }
