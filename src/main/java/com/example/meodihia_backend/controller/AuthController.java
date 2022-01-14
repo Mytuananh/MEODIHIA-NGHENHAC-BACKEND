@@ -1,7 +1,6 @@
 package com.example.meodihia_backend.controller;
 
 import com.example.meodihia_backend.dto.request.*;
-import com.example.meodihia_backend.dto.response.JwtResponse;
 import com.example.meodihia_backend.dto.response.ResponeMessage;
 import com.example.meodihia_backend.model.Role;
 import com.example.meodihia_backend.model.RoleName;
