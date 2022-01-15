@@ -105,20 +105,33 @@ public class AuthController {
     }
 
     @PutMapping("/change-profile")
-    public ResponseEntity<?> editProfile(@RequestBody ChangeUser changeUser) {
-        User user = userDetailServices.getCurrentUser();
-        if (user.getUsername().equals("Anonymous")) {
-            return new ResponseEntity<>(new ResponeMessage("Please login!"), HttpStatus.OK);
+    public ResponseEntity<?> editProfile(HttpServletRequest request,@Valid @RequestBody ChangeUser changeUser) {
+        String jwt = JwtTokenFilter.getJwt(request);
+        String username = jwtProvider.getUerNameFromToken(jwt);
+        User user;
+        try {
+            if (userService.existsByFullName(changeUser.getFullName())) {
+                return new ResponseEntity<>(new ResponeMessage("nofullname"), HttpStatus.OK);
+            }
+            if (userService.existsByEmail(changeUser.getEmail())) {
+                return new ResponseEntity<>(new ResponeMessage("noemail"), HttpStatus.OK);
+            }
+            if (userService.existsByPhoneNumber(changeUser.getPhoneNumber())) {
+                return new ResponseEntity<>(new ResponeMessage("nophonenumber"), HttpStatus.OK);
+            }
+            user = userService.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("user not found with -> username " + username));
+            user.setFullName(changeUser.getFullName());
+            user.setEmail(changeUser.getEmail());
+            user.setAddress(changeUser.getAddress());
+            user.setPhoneNumber(changeUser.getPhoneNumber());
+            userService.save(user);
+            return new ResponseEntity<>(new ResponeMessage("yes"), HttpStatus.OK);
+        } catch (UsernameNotFoundException exception) {
+            return new ResponseEntity<>(new ResponeMessage(exception.getMessage()), HttpStatus.NOT_FOUND);
         }
-        user.setFullName(changeUser.getFullName());
-        user.setAddress(changeUser.getAddress());
-        user.setEmail(changeUser.getEmail());
-        user.setPhoneNumber(changeUser.getPhoneNumber());
-        userService.save(user);
-        return new ResponseEntity<>(new ResponeMessage("yes"), HttpStatus.OK);
-    }
 
-    @PutMapping("/change-password")
+    }
+        @PutMapping("/change-password")
     public ResponseEntity<?> changePassword(HttpServletRequest request, @Valid @RequestBody ChangePassword changePassword){
         String jwt = JwtTokenFilter.getJwt(request);
         String username = jwtProvider.getUerNameFromToken(jwt);

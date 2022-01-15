@@ -11,5 +11,7 @@ public interface IUserService extends IGeneralService<User> {
     Boolean existsByUsername(String username); //username da co trong DB chua, khi tao du lieu
     Boolean existsByEmail(String email); //email da co trong DB chua
     Boolean existsByPhoneNumber(String phoneNumber);
+    Boolean existsByFullName(String fullName);
+
 
 }
