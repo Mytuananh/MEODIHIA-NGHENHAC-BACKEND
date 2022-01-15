@@ -46,6 +46,15 @@ public class SongController {
         if(user.getUsername().equals("Anonymous")){
             return new ResponseEntity<>(new ResponeMessage("Please login!"), HttpStatus.OK);
         }
+        if (songService.existsByName(song.getName())) {
+            return new ResponseEntity<>(new ResponeMessage("name_song_exist"), HttpStatus.OK);
+        }
+        if (song.getAvatar()==null) {
+            return new ResponseEntity<>(new ResponeMessage("no_avatar_song"), HttpStatus.OK);
+        }
+        if (song.getFile()==null) {
+            return new ResponseEntity<>(new ResponeMessage("no_music_song"), HttpStatus.OK);
+        }
         songService.save(song);
         return new ResponseEntity<>(song, HttpStatus.CREATED);
     }
