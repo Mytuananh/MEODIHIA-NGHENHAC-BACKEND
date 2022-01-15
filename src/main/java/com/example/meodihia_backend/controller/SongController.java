@@ -126,7 +126,7 @@ public class SongController {
         song1.get().setPlaylists(song.getPlaylists());
         song1.get().setAvatar(song.getAvatar());
         songService.save(song1.get());
-        return new ResponseEntity<>(new ResponeMessage("Done Edit!"), HttpStatus.OK);
+        return new ResponseEntity<>(new ResponeMessage("yes"), HttpStatus.OK);
     }
 
     @GetMapping("/find-song-by-name/{name}")
