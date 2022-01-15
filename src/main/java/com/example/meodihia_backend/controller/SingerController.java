@@ -2,12 +2,9 @@ package com.example.meodihia_backend.controller;
 
 import com.example.meodihia_backend.dto.response.ResponeMessage;
 import com.example.meodihia_backend.model.Singer;
-import com.example.meodihia_backend.model.Song;
 import com.example.meodihia_backend.model.User;
 import com.example.meodihia_backend.security.userprincal.UserDetailServices;
-import com.example.meodihia_backend.service.comment.CommentService;
 import com.example.meodihia_backend.service.singer.SingerService;
-import com.example.meodihia_backend.service.song.SongService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,7 +20,7 @@ import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping("")
+@RequestMapping
 public class SingerController {
     @Autowired
     UserDetailServices userDetailServices;
@@ -90,17 +87,11 @@ public class SingerController {
                 singerService.save(singer1.get());
                 return new ResponseEntity<>(new ResponeMessage("yes"), HttpStatus.OK);
             }
-            if (!singer.getSongs().equals(singer1.get().getSongs())) {
-                singer1.get().setSongs(singer.getSongs());
-                singerService.save(singer1.get());
-                return new ResponseEntity<>(new ResponeMessage("yes"), HttpStatus.OK);
-            }
-            return new ResponseEntity<>(new ResponeMessage("no_name_product"), HttpStatus.OK);
+            return new ResponseEntity<>(new ResponeMessage("no_name_singer"), HttpStatus.OK);
         }
         singer1.get().setName(singer.getName());
         singer1.get().setAge(singer.getAge());
         singer1.get().setCountryside(singer.getCountryside());
-        singer1.get().setSongs(singer.getSongs());
         singer1.get().setAvatar(singer.getAvatar());
         singerService.save(singer1.get());
         return new ResponseEntity<>(new ResponeMessage("Done Edit!"), HttpStatus.OK);
