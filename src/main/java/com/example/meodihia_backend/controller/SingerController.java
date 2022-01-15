@@ -90,8 +90,8 @@ public class SingerController {
                 singerService.save(singer1.get());
                 return new ResponseEntity<>(new ResponeMessage("yes"), HttpStatus.OK);
             }
-            if (!singer.getSongList().equals(singer1.get().getSongList())) {
-                singer1.get().setSongList(singer.getSongList());
+            if (!singer.getSongs().equals(singer1.get().getSongs())) {
+                singer1.get().setSongs(singer.getSongs());
                 singerService.save(singer1.get());
                 return new ResponseEntity<>(new ResponeMessage("yes"), HttpStatus.OK);
             }
@@ -100,7 +100,7 @@ public class SingerController {
         singer1.get().setName(singer.getName());
         singer1.get().setAge(singer.getAge());
         singer1.get().setCountryside(singer.getCountryside());
-        singer1.get().setSongList(singer.getSongList());
+        singer1.get().setSongs(singer.getSongs());
         singer1.get().setAvatar(singer.getAvatar());
         singerService.save(singer1.get());
         return new ResponseEntity<>(new ResponeMessage("Done Edit!"), HttpStatus.OK);
@@ -112,5 +112,13 @@ public class SingerController {
         Page<Singer> singerPage = singerService.findSingerByNameContaining(name,pageable);
         List<Singer> list = singerPage.getContent();
         return new ResponseEntity<>(list,HttpStatus.OK);
+    }
+    @GetMapping("/singer-list")
+    public ResponseEntity<?> showListSongNew() {
+        List<Singer> singerList = singerService.findAll();
+        if (singerList.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(singerList, HttpStatus.OK);
     }
 }
