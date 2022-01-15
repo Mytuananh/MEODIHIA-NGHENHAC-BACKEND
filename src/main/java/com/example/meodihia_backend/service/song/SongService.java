@@ -41,4 +41,9 @@ public class SongService implements ISongService{
         return songRepository.findSongsByNameContaining(name,pageable);
     }
 
+    @Override
+    public boolean existsByName(String name) {
+        return songRepository.existsByName(name);
+    }
+
 }

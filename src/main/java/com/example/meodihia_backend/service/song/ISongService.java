@@ -7,5 +7,6 @@ import org.springframework.data.domain.Pageable;
 
 public interface ISongService extends IGeneralService<Song> {
     Page<Song> findSongByNameContaining(String name,Pageable pageable);
+    boolean existsByName(String name);
 
 }

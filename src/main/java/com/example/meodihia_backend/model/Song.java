@@ -20,6 +20,7 @@ public class Song {
     private String name;
     private String description;
     private String file;
+    private String avatar;
     @ManyToOne
     @JoinColumn(name = "singer_id")
     @LazyCollection(LazyCollectionOption.FALSE)

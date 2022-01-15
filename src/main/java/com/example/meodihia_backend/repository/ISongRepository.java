@@ -11,5 +11,6 @@ public interface ISongRepository extends JpaRepository<Song,Long>{
     Iterable<Song> findAllByUser_Id(Long id);
     Page<Song> findAll(Pageable pageable);
     Page<Song> findSongsByNameContaining(String name, Pageable pageable);
+    boolean existsByName(String name);
 
 }
