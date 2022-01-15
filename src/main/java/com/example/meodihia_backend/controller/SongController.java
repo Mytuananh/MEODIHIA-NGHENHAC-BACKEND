@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -70,13 +71,52 @@ public class SongController {
         if(user.getUsername().equals("Anonymous")){
             return new ResponseEntity<>(new ResponeMessage("Please login!"), HttpStatus.OK);
         }
-        Song song1 = songService.findById(id).get();
-        song1.setName(song.getName());
-        song1.setDescription(song.getDescription());
-        song1.setFile(song.getFile());
-        song1.setSinger(song.getSinger());
-        song1.setMusician(song.getMusician());
-        songService.save(song1);
+
+        Optional<Song> song1 = songService.findById(id);
+        if (!song1.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        if (songService.existsByName(song.getName())) {
+            if (!song.getDescription().equals(song1.get().getDescription())) {
+                song1.get().setDescription(song.getDescription());
+                songService.save(song1.get());
+                return new ResponseEntity<>(new ResponeMessage("yes"), HttpStatus.OK);
+            }
+            if (!song.getSinger().equals(song1.get().getSinger())) {
+                song1.get().setSinger(song.getSinger());
+                songService.save(song1.get());
+                return new ResponseEntity<>(new ResponeMessage("yes"), HttpStatus.OK);
+            }
+            if (!song.getMusician().equals(song1.get().getMusician())) {
+                song1.get().setMusician(song.getMusician());
+                songService.save(song1.get());
+                return new ResponseEntity<>(new ResponeMessage("yes"), HttpStatus.OK);
+            }
+            if (!song.getFile().equals(song1.get().getFile())) {
+                song1.get().setFile(song.getFile());
+                songService.save(song1.get());
+                return new ResponseEntity<>(new ResponeMessage("yes"), HttpStatus.OK);
+            }
+            if (!song.getPlaylists().equals(song1.get().getPlaylists())) {
+                song1.get().setPlaylists(song.getPlaylists());
+                songService.save(song1.get());
+                return new ResponseEntity<>(new ResponeMessage("yes"), HttpStatus.OK);
+            }
+            if (!song.getAvatar().equals(song1.get().getAvatar())) {
+                song1.get().setAvatar(song.getAvatar());
+                songService.save(song1.get());
+                return new ResponseEntity<>(new ResponeMessage("yes"), HttpStatus.OK);
+            }
+            return new ResponseEntity<>(new ResponeMessage("no_name_song"), HttpStatus.OK);
+        }
+        song1.get().setName(song.getName());
+        song1.get().setDescription(song.getDescription());
+        song1.get().setFile(song.getFile());
+        song1.get().setSinger(song.getSinger());
+        song1.get().setMusician(song.getMusician());
+        song1.get().setPlaylists(song.getPlaylists());
+        song1.get().setAvatar(song.getAvatar());
+        songService.save(song1.get());
         return new ResponseEntity<>(new ResponeMessage("Done Edit!"), HttpStatus.OK);
     }
 
