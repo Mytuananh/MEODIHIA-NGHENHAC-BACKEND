@@ -90,7 +90,7 @@ public class AuthController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtProvider.createToken(authentication);
         UserPrinciple userPrinciple = (UserPrinciple) authentication.getPrincipal();
-        return ResponseEntity.ok(new JwtResponse(token, userPrinciple.getUsername(), userPrinciple.getAvatar(), userPrinciple.getAuthorities()));
+        return ResponseEntity.ok(new JwtResponse(token, userPrinciple.getUsername(),userPrinciple.getFullName(), userPrinciple.getAvatar(), userPrinciple.getAddress(),userPrinciple.getEmail(),userPrinciple.getPhoneNumber(), userPrinciple.getAuthorities()));
     }
 
     @PutMapping("/change-avatar")
@@ -104,7 +104,6 @@ public class AuthController {
         return new ResponseEntity<>(new ResponeMessage("yes"), HttpStatus.OK);
     }
 
-
     @PutMapping("/change-profile")
     public ResponseEntity<?> editProfile(@RequestBody ChangeUser changeUser) {
         User user = userDetailServices.getCurrentUser();
@@ -115,7 +114,6 @@ public class AuthController {
         user.setAddress(changeUser.getAddress());
         user.setEmail(changeUser.getEmail());
         user.setPhoneNumber(changeUser.getPhoneNumber());
-        user.setAvatar(changeUser.getAvatar());
         userService.save(user);
         return new ResponseEntity<>(new ResponeMessage("yes"), HttpStatus.OK);
     }

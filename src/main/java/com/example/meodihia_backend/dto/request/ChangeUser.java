@@ -5,17 +5,15 @@ public class ChangeUser {
     private String address;
     private String email;
     private String phoneNumber;
-    private String avatar;
 
     public ChangeUser() {
     }
 
-    public ChangeUser(String fullName, String address, String email, String phoneNumber, String avatar) {
+    public ChangeUser(String fullName, String address, String email, String phoneNumber) {
         this.fullName = fullName;
         this.address = address;
         this.email = email;
         this.phoneNumber = phoneNumber;
-        this.avatar = avatar;
     }
 
     public String getFullName() {
@@ -50,11 +48,4 @@ public class ChangeUser {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
 }
