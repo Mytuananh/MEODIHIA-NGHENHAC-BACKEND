@@ -82,8 +82,8 @@ public class SongController {
                 songService.save(song1.get());
                 return new ResponseEntity<>(new ResponeMessage("yes"), HttpStatus.OK);
             }
-            if (!song.getSinger().equals(song1.get().getSinger())) {
-                song1.get().setSinger(song.getSinger());
+            if (!song.getSingers().equals(song1.get().getSingers())) {
+                song1.get().setSingers(song.getSingers());
                 songService.save(song1.get());
                 return new ResponseEntity<>(new ResponeMessage("yes"), HttpStatus.OK);
             }
@@ -112,7 +112,7 @@ public class SongController {
         song1.get().setName(song.getName());
         song1.get().setDescription(song.getDescription());
         song1.get().setFile(song.getFile());
-        song1.get().setSinger(song.getSinger());
+        song1.get().setSingers(song.getSingers());
         song1.get().setMusician(song.getMusician());
         song1.get().setPlaylists(song.getPlaylists());
         song1.get().setAvatar(song.getAvatar());
