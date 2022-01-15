@@ -2,26 +2,66 @@ package com.example.meodihia_backend.dto.response;
 
 import org.springframework.security.core.GrantedAuthority;
 
+import javax.xml.transform.sax.SAXResult;
 import java.util.Collection;
 
 public class JwtResponse {
     private String token;
     private String type = "Bearer";
     private String username;
+    private String fullname;
     private String avatar;
+    private String address;
+    private String email;
+    private String phoneNumber;
     private Collection<? extends GrantedAuthority> roles;
 
     public JwtResponse() {
     }
 
 
-    public JwtResponse(String token, String username, String avatar, Collection<? extends GrantedAuthority> authorities) {
+    public JwtResponse(String token, String username,String fullname, String avatar,String address,String email,String  phoneNumber, Collection<? extends GrantedAuthority> authorities) {
         this.token = token;
         this.username = username;
-        this.roles = authorities;
+        this.fullname = fullname;
         this.avatar = avatar;
+        this.address = address;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.roles = authorities;
     }
 
+    public String getFullname() {
+        return fullname;
+    }
+
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
 
     public String getAvatar() {
         return avatar;

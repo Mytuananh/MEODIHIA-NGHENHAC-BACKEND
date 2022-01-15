@@ -15,6 +15,8 @@ public class UserPrinciple implements UserDetails {
     private Long id;
     private String fullName;
     private String username;
+    private String address;
+    private String email;
     private String phoneNumber;
     @JsonIgnore
     private String password;
@@ -26,11 +28,13 @@ public class UserPrinciple implements UserDetails {
     public UserPrinciple() {
     }
 
-    public UserPrinciple(Long id, String fullName, String username, String phoneNumber, String password, String re_password, String avatar, Collection<? extends GrantedAuthority> roles) {
+    public UserPrinciple(Long id, String fullName, String username,String address,String email, String phoneNumber, String password, String re_password, String avatar, Collection<? extends GrantedAuthority> roles) {
         this.id = id;
         this.fullName = fullName;
         this.username = username;
         this.phoneNumber = phoneNumber;
+        this. address = address;
+        this.email = email;
         this.password = password;
         this.re_password = re_password;
         this.avatar = avatar;
@@ -43,12 +47,74 @@ public class UserPrinciple implements UserDetails {
                 user.getId(),
                 user.getFullName(),
                 user.getUsername(),
+                user.getAddress(),
+                user.getEmail(),
                 user.getPhoneNumber(),
                 user.getPassword(),
                 user.getRe_password(),
                 user.getAvatar(),
                 authorities
         );
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getRe_password() {
+        return re_password;
+    }
+
+    public void setRe_password(String re_password) {
+        this.re_password = re_password;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public Collection<? extends GrantedAuthority> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Collection<? extends GrantedAuthority> roles) {
+        this.roles = roles;
     }
 
     public String getAvatar() {

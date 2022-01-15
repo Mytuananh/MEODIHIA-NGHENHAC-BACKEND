@@ -33,7 +33,7 @@ public class UserDetailServices implements UserDetailsService {
     public User getCurrentUser() {
         Optional<User> user;
         String userName;
-        //Lay 1 object principal trong SecurityContexHolder
+        //Lay 1 object principal trong SecurityContexHolder;
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         //So sanh obj voi Userdetails neu ma dung thi gan userName = principal.getUsername();
         if (principal instanceof UserDetails) {
