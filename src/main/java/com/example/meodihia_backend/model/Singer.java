@@ -16,6 +16,7 @@ public class Singer {
     private String name;
     private String age;
     private String countryside;
+    private String avatar;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "singer", orphanRemoval = true)
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Song> songList;
