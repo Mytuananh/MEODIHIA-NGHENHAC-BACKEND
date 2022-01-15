@@ -126,16 +126,17 @@ public class AuthController {
         try {
             user = userService.findByUsername(username).orElseThrow(()-> new UsernameNotFoundException("User Not Found with -> username"+username));
             boolean matches = passwordEncoder.matches(changePassword.getOldPassword(), user.getPassword());
-            if(changePassword.getNewPassword() != null){
+            if(changePassword.getNewPassword() != null && changePassword.getNewPassword().equals(changePassword.getRe_newPassword())){
                 if(matches){
                     user.setPassword(passwordEncoder.encode(changePassword.getNewPassword()));
                     user.setRe_password(passwordEncoder.encode(changePassword.getRe_newPassword()));
                     userService.save(user);
+                    return new ResponseEntity<>(new ResponeMessage("yes"), HttpStatus.OK);
                 } else {
-                    return new ResponseEntity<>(new ResponeMessage("no"), HttpStatus.OK);
+                    return new ResponseEntity<>(new ResponeMessage("no"), HttpStatus.BAD_REQUEST);
                 }
             }
-            return new ResponseEntity<>(new ResponeMessage("yes"), HttpStatus.OK);
+            return new ResponseEntity<>(new ResponeMessage("yes"), HttpStatus.BAD_REQUEST);
         } catch (UsernameNotFoundException exception){
             return new ResponseEntity<>(new ResponeMessage(exception.getMessage()), HttpStatus.NOT_FOUND);
         }
