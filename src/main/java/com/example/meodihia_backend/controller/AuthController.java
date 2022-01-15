@@ -115,7 +115,6 @@ public class AuthController {
         user.setAddress(changeUser.getAddress());
         user.setEmail(changeUser.getEmail());
         user.setPhoneNumber(changeUser.getPhoneNumber());
-        user.setAvatar(changeUser.getAvatar());
         userService.save(user);
         return new ResponseEntity<>(new ResponeMessage("yes"), HttpStatus.OK);
     }
