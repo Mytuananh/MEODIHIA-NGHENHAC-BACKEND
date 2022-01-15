@@ -113,4 +113,12 @@ public class SingerController {
         List<Singer> list = singerPage.getContent();
         return new ResponseEntity<>(list,HttpStatus.OK);
     }
+    @GetMapping("/singer-list")
+    public ResponseEntity<?> showListSongNew() {
+        List<Singer> singerList = singerService.findAll();
+        if (singerList.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(singerList, HttpStatus.OK);
+    }
 }
