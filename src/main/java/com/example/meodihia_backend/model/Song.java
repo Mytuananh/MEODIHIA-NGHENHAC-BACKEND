@@ -9,7 +9,9 @@ import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
@@ -21,10 +23,11 @@ public class Song {
     private String description;
     private String file;
     private String avatar;
-    @ManyToOne
-    @JoinColumn(name = "singer_id")
-    @LazyCollection(LazyCollectionOption.FALSE)
-    private Singer singer;
+
+    @ManyToMany(fetch = FetchType.LAZY, targetEntity = Singer.class)
+    @Fetch(value = FetchMode.SUBSELECT)
+    private List<Singer> singers;
+
     private String musician;
     private Long count;
     private Long countLike;
