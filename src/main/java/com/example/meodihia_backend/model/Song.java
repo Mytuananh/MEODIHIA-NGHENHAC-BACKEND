@@ -20,7 +20,10 @@ public class Song {
     private String name;
     private String description;
     private String file;
-    private String singer;
+    @ManyToOne
+    @JoinColumn(name = "singer_id")
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private Singer singer;
     private String musician;
     private Long count;
     private Long countLike;
