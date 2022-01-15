@@ -17,6 +17,11 @@ public class UserService implements IUserService {
     private IUserRepository userRepository;
 
     @Override
+    public Boolean existsByFullName(String fullName) {
+      return userRepository.existsByFullName(fullName);
+    }
+
+    @Override
     public List<User> findAll() {
         return userRepository.findAll();
     }
