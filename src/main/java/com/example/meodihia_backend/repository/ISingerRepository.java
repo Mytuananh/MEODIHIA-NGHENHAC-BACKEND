@@ -10,4 +10,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ISingerRepository extends JpaRepository<Singer, Long> {
     Page<Singer> findSingerByNameContaining(String name, Pageable pageable);
+    boolean existsByName(String name);
 }

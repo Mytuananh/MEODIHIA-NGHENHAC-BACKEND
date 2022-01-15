@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -69,12 +70,39 @@ public class SingerController {
         if(user.getUsername().equals("Anonymous")){
             return new ResponseEntity<>(new ResponeMessage("Please login!"), HttpStatus.OK);
         }
-        Singer singer1 = singerService.findById(id).get();
-        singer1.setName(singer.getName());
-        singer1.setAge(singer.getAge());
-        singer1.setCountryside(singer.getCountryside());
-        singer1.setSongList(singer.getSongList());
-        singerService.save(singer1);
+        Optional<Singer> singer1 = singerService.findById(id);
+        if (!singer1.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        if (singerService.existsByName(singer.getName())) {
+            if (!singer.getAge().equals(singer1.get().getAge())) {
+                singer1.get().setAge(singer.getAge());
+                singerService.save(singer1.get());
+                return new ResponseEntity<>(new ResponeMessage("yes"), HttpStatus.OK);
+            }
+            if (!singer.getAvatar().equals(singer1.get().getAvatar())) {
+                singer1.get().setAvatar(singer.getAvatar());
+                singerService.save(singer1.get());
+                return new ResponseEntity<>(new ResponeMessage("yes"), HttpStatus.OK);
+            }
+            if (!singer.getCountryside().equals(singer1.get().getCountryside())) {
+                singer1.get().setCountryside(singer.getCountryside());
+                singerService.save(singer1.get());
+                return new ResponseEntity<>(new ResponeMessage("yes"), HttpStatus.OK);
+            }
+            if (!singer.getSongList().equals(singer1.get().getSongList())) {
+                singer1.get().setSongList(singer.getSongList());
+                singerService.save(singer1.get());
+                return new ResponseEntity<>(new ResponeMessage("yes"), HttpStatus.OK);
+            }
+            return new ResponseEntity<>(new ResponeMessage("no_name_product"), HttpStatus.OK);
+        }
+        singer1.get().setName(singer.getName());
+        singer1.get().setAge(singer.getAge());
+        singer1.get().setCountryside(singer.getCountryside());
+        singer1.get().setSongList(singer.getSongList());
+        singer1.get().setAvatar(singer.getAvatar());
+        singerService.save(singer1.get());
         return new ResponseEntity<>(new ResponeMessage("Done Edit!"), HttpStatus.OK);
     }
 

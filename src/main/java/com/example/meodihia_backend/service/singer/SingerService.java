@@ -44,4 +44,9 @@ public class SingerService implements ISingerService{
     public Page<Singer> findSingerByNameContaining(String name, Pageable pageable) {
         return singerRepository.findSingerByNameContaining(name, pageable);
     }
+
+    @Override
+    public boolean existsByName(String name) {
+        return singerRepository.existsByName(name);
+    }
 }
