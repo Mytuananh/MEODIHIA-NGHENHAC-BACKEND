@@ -56,7 +56,7 @@ public class SongController {
             return new ResponseEntity<>(new ResponeMessage("no_music_song"), HttpStatus.OK);
         }
         songService.save(song);
-        return new ResponseEntity<>(song, HttpStatus.CREATED);
+        return new ResponseEntity<>(new ResponeMessage("yes"), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/delete-song/{id}")

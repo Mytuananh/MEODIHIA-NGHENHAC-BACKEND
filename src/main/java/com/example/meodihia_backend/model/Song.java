@@ -24,8 +24,8 @@ public class Song {
     private String file;
     private String avatar;
 
-    @ManyToMany(fetch = FetchType.LAZY, targetEntity = Singer.class)
-    @Fetch(value = FetchMode.SUBSELECT)
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "song_singer", joinColumns = @JoinColumn(name = "song_id"), inverseJoinColumns = @JoinColumn(name = "singer_id"))
     private List<Singer> singers;
 
     private String musician;
