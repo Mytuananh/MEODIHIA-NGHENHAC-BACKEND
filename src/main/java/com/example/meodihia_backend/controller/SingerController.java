@@ -42,8 +42,14 @@ public class SingerController {
         if(user.getUsername().equals("Anonymous")){
             return new ResponseEntity<>(new ResponeMessage("Please login!"), HttpStatus.OK);
         }
+        if (singerService.existsByName(singer.getName())) {
+            return new ResponseEntity<>(new ResponeMessage("name_singer_exist"), HttpStatus.OK);
+        }
+        if (singer.getAvatar()==null) {
+            return new ResponseEntity<>(new ResponeMessage("no_avatar_singer"), HttpStatus.OK);
+        }
         singerService.save(singer);
-        return new ResponseEntity<>(singer, HttpStatus.CREATED);
+        return new ResponseEntity<>(new ResponeMessage("yes"), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/delete-singer/{id}")

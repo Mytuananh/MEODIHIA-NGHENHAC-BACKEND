@@ -55,7 +55,16 @@ public class SongController {
         if (song.getFile()==null) {
             return new ResponseEntity<>(new ResponeMessage("no_music_song"), HttpStatus.OK);
         }
-        songService.save(song);
+        Song  song1= new Song();
+        song1.setName(song.getName());
+        song1.setDescription(song.getDescription());
+        song1.setFile(song.getFile());
+        song1.setAvatar(song.getAvatar());
+        song1.setSingers(song.getSingers());
+        song1.setMusician(song.getMusician());
+        song1.setCount(0L);
+        song1.setCountLike(0L);
+        songService.save(song1);
         return new ResponseEntity<>(new ResponeMessage("yes"), HttpStatus.CREATED);
     }
 
@@ -171,6 +180,21 @@ public class SongController {
         return new ResponseEntity<>(songList, HttpStatus.OK);
     }
 
+    @GetMapping("/latest")
+    public ResponseEntity<Page<Song>> latest() {
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("id").descending());
+        Page<Song> songPage = songService.findAllLaters(pageable);
+        return new ResponseEntity<>(songPage, HttpStatus.OK);
+    }
+    @PutMapping("/updateCount")
+    public ResponseEntity<String> updateSong(@RequestBody Long id) {
+        Song song = songService.findById(id).get();
+        Long count = song.getCount() + 1;
+        song.setCount(count);
+        System.out.println(song.getCount());
+        songService.save(song);
+        return new ResponseEntity<>("Ok", HttpStatus.OK);
+    }
 
 }
 
