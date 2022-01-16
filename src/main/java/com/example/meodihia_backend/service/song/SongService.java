@@ -35,6 +35,10 @@ public class SongService implements ISongService{
         return songRepository.findById(id);
     }
 
+    @Override
+    public Page<Song> findAllLaters(Pageable pageable) {
+        return songRepository.findAll(pageable);
+    }
 
     @Override
     public Page<Song> findSongByNameContaining(String name, Pageable pageable) {
