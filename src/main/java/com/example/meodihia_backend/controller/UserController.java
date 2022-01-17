@@ -28,6 +28,7 @@ public class UserController {
     @GetMapping("list-user")
     public ResponseEntity<?> pageUser(@PageableDefault(sort = "username", direction = Sort.Direction.ASC) Pageable pageable) {
         Page<User> userPage = userService.findAll(pageable);
+
         if (userPage.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
