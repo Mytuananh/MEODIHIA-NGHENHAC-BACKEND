@@ -6,6 +6,7 @@ import javax.xml.transform.sax.SAXResult;
 import java.util.Collection;
 
 public class JwtResponse {
+    private Long id;
     private String token;
     private String type = "Bearer";
     private String username;
@@ -20,7 +21,8 @@ public class JwtResponse {
     }
 
 
-    public JwtResponse(String token, String username,String fullname, String avatar,String address,String email,String  phoneNumber, Collection<? extends GrantedAuthority> authorities) {
+    public JwtResponse(Long id, String token, String username,String fullname, String avatar,String address,String email,String  phoneNumber, Collection<? extends GrantedAuthority> authorities) {
+        this.id = id;
         this.token = token;
         this.username = username;
         this.fullname = fullname;
@@ -29,6 +31,14 @@ public class JwtResponse {
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.roles = authorities;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getFullname() {
