@@ -1,6 +1,6 @@
 package com.example.meodihia_backend.controller;
 
-import com.example.meodihia_backend.dto.dto.CommentDto;
+import com.example.meodihia_backend.dto.request.CommentDto;
 import com.example.meodihia_backend.dto.request.LikeUser;
 import com.example.meodihia_backend.dto.response.ResponeMessage;
 import com.example.meodihia_backend.model.Comment;
@@ -156,11 +156,9 @@ public class SongController {
 
     @PostMapping("/comment")
     public ResponseEntity<?>createCommentForSong(@RequestBody CommentDto comment){
-        User user = userDetailServices.getCurrentUser();
-        if(user.getUsername().equals("Anonymous")){
-            return new ResponseEntity<>(new ResponeMessage("Please login!"), HttpStatus.OK);
-        }
+
         Comment newComment = new Comment();
+        User user = userService.findById(comment.getIdUser()).get();
         Song song =songService.findById(comment.getIdSong()).get();
         String text = comment.getText();
         newComment.setUser(user);
@@ -241,7 +239,11 @@ public class SongController {
         return new ResponseEntity<>(songPage, HttpStatus.OK);
     }
 
-
-
+    @GetMapping("/comment/{id}")
+    public ResponseEntity<List<Comment>> fillAllComment(@PathVariable("id") Long idSong) {
+        Song song = songService.findById(idSong).get();
+        List<Comment> list = song.getCommentList();
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
 }
 
