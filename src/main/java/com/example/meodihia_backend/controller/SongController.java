@@ -1,13 +1,17 @@
 package com.example.meodihia_backend.controller;
 
 import com.example.meodihia_backend.dto.dto.CommentDto;
+import com.example.meodihia_backend.dto.request.LikeUser;
 import com.example.meodihia_backend.dto.response.ResponeMessage;
 import com.example.meodihia_backend.model.Comment;
+import com.example.meodihia_backend.model.Likes;
 import com.example.meodihia_backend.model.Song;
 import com.example.meodihia_backend.model.User;
 import com.example.meodihia_backend.security.userprincal.UserDetailServices;
 import com.example.meodihia_backend.service.comment.CommentService;
+import com.example.meodihia_backend.service.like.LikeService;
 import com.example.meodihia_backend.service.song.SongService;
+import com.example.meodihia_backend.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -31,6 +35,10 @@ public class SongController {
     SongService songService;
     @Autowired
     CommentService commentService;
+    @Autowired
+    UserService userService;
+    @Autowired
+    LikeService likeService;
     @GetMapping("/list-song")
     public ResponseEntity<?> pageSong(@PageableDefault(sort = "name", direction = Sort.Direction.ASC)Pageable pageable){
         Page<Song> songPage = songService.findAll(pageable);
@@ -182,7 +190,7 @@ public class SongController {
 
     @GetMapping("/latest")
     public ResponseEntity<Page<Song>> latest() {
-        Pageable pageable = PageRequest.of(0, 10, Sort.by("id").descending());
+        Pageable pageable = PageRequest.of(0, 4, Sort.by("id").descending());
         Page<Song> songPage = songService.findAllLaters(pageable);
         return new ResponseEntity<>(songPage, HttpStatus.OK);
     }
@@ -195,6 +203,44 @@ public class SongController {
         songService.save(song);
         return new ResponseEntity<>("Ok", HttpStatus.OK);
     }
+
+    @GetMapping("/song-count")
+    public ResponseEntity<Page<Song>> count() {
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("count").descending());
+        Page<Song> songPage = songService.findAllByCount(pageable);
+        return new ResponseEntity<>(songPage, HttpStatus.OK);
+    }
+
+    @PostMapping("/like")
+    public ResponseEntity<?> like(@RequestBody LikeUser likeUser) {
+        User user = userService.findById(likeUser.getIdUser()).get();
+        Song song = songService.findById(likeUser.getIdSong()).get();
+        song.setCountLike(song.getCountLike() + 1);
+        Likes like = new Likes();
+        like.setUser(user);
+        like.setSong(song);
+        likeService.save(like);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping("/like/{idLike}")
+    public ResponseEntity<?> unlike(@PathVariable("idLike") Long idLike) {
+        Likes like = likeService.findById(idLike).get();
+        Song song = like.getSong();
+        song.setCountLike(song.getCountLike() - 1);
+        songService.save(song);
+        likeService.deleteById(idLike);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/likes")
+    public ResponseEntity<Page<Song>> likes() {
+        Pageable pageable = PageRequest.of(0, 4, Sort.by("countLike").descending());
+        Page<Song> songPage = songService.findAllByCount(pageable);
+        return new ResponseEntity<>(songPage, HttpStatus.OK);
+    }
+
+
 
 }
 
