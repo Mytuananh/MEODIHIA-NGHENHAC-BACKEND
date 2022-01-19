@@ -9,5 +9,6 @@ public interface ISongService extends IGeneralService<Song> {
     Page<Song> findSongByNameContaining(String name,Pageable pageable);
     boolean existsByName(String name);
     Page<Song> findAllLaters(Pageable pageable);
+    Page<Song> findAllByCount(Pageable pageable);
 
 }
