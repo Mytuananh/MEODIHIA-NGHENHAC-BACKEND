@@ -206,7 +206,7 @@ public class SongController {
 
     @GetMapping("/song-count")
     public ResponseEntity<Page<Song>> count() {
-        Pageable pageable = PageRequest.of(0, 10, Sort.by("count").descending());
+        Pageable pageable = PageRequest.of(0, 6, Sort.by("count").descending());
         Page<Song> songPage = songService.findAllByCount(pageable);
         return new ResponseEntity<>(songPage, HttpStatus.OK);
     }
@@ -216,6 +216,7 @@ public class SongController {
         User user = userService.findById(likeUser.getIdUser()).get();
         Song song = songService.findById(likeUser.getIdSong()).get();
         song.setCountLike(song.getCountLike() + 1);
+        songService.save(song);
         Likes like = new Likes();
         like.setUser(user);
         like.setSong(song);
@@ -223,8 +224,8 @@ public class SongController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping("/like/{idLike}")
-    public ResponseEntity<?> unlike(@PathVariable("idLike") Long idLike) {
+    @DeleteMapping("/like/{id}")
+    public ResponseEntity<?> unlike(@PathVariable("id") Long idLike) {
         Likes like = likeService.findById(idLike).get();
         Song song = like.getSong();
         song.setCountLike(song.getCountLike() - 1);
