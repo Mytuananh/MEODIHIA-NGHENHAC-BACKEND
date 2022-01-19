@@ -206,7 +206,7 @@ public class SongController {
 
     @GetMapping("/song-count")
     public ResponseEntity<Page<Song>> count() {
-        Pageable pageable = PageRequest.of(0, 10, Sort.by("count").descending());
+        Pageable pageable = PageRequest.of(0, 6, Sort.by("count").descending());
         Page<Song> songPage = songService.findAllByCount(pageable);
         return new ResponseEntity<>(songPage, HttpStatus.OK);
     }
