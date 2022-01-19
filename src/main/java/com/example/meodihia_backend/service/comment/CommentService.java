@@ -41,4 +41,14 @@ public class CommentService implements ICommentService{
     public Optional<Comment> findById(Long id) {
         return commentRepository.findById(id);
     }
+
+    @Override
+    public List<Comment> findAllBySong_Id(Long id) {
+        return commentRepository.findAllBySong_Id(id);
+    }
+
+    @Override
+    public List<Comment> findAllByPlaylist_Id(Long id) {
+        return commentRepository.findAllByPlaylist_Id(id);
+    }
 }
