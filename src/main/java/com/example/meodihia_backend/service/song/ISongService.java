@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 
 public interface ISongService extends IGeneralService<Song> {
+    Iterable<Song> findAllByUser_Id(Long id);
     Page<Song> findSongByNameContaining(String name,Pageable pageable);
     boolean existsByName(String name);
     Page<Song> findAllLaters(Pageable pageable);
