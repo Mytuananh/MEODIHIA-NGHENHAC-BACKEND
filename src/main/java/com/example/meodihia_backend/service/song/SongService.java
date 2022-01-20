@@ -51,6 +51,11 @@ public class SongService implements ISongService{
     }
 
     @Override
+    public Iterable<Song> findAllByUser_Id(Long id) {
+        return songRepository.findAllByUser_Id(id);
+    }
+
+    @Override
     public Page<Song> findSongByNameContaining(String name, Pageable pageable) {
         return songRepository.findSongsByNameContaining(name,pageable);
     }

@@ -23,6 +23,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -71,6 +72,7 @@ public class SongController {
         song1.setAvatar(song.getAvatar());
         song1.setSingers(song.getSingers());
         song1.setMusician(song.getMusician());
+        song1.setUser(user);
         song1.setCount(0L);
         song1.setCountLike(0L);
         songService.save(song1);
@@ -254,6 +256,13 @@ public class SongController {
     @GetMapping ("/search/{searchKey}")
     public ResponseEntity<?> findSongByNameOrSinger(@PathVariable("searchKey") String name,Pageable pageable) {
         List<Song> songList= songService.findSongsBySingerNameorSongName(name, pageable).getContent();
+        return new ResponseEntity<>(songList, HttpStatus.OK);
+    }
+
+    @GetMapping("/songs/{id}")
+    public ResponseEntity<List<Song>> findAllSongByUser_Id(@PathVariable("id") Long idUser) {
+        List<Song> songList;
+        songList = (List<Song>) songService.findAllByUser_Id(idUser);
         return new ResponseEntity<>(songList, HttpStatus.OK);
     }
 }
