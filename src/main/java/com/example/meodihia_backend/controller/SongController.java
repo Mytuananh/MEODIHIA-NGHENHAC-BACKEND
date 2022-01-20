@@ -2,6 +2,7 @@ package com.example.meodihia_backend.controller;
 
 import com.example.meodihia_backend.dto.request.CommentDto;
 import com.example.meodihia_backend.dto.request.LikeUser;
+import com.example.meodihia_backend.dto.request.SearchForm;
 import com.example.meodihia_backend.dto.response.ResponeMessage;
 import com.example.meodihia_backend.model.Comment;
 import com.example.meodihia_backend.model.Likes;
@@ -81,6 +82,10 @@ public class SongController {
         User user = userDetailServices.getCurrentUser();
         if(user.getUsername().equals("Anonymous")){
             return new ResponseEntity<>(new ResponeMessage("Please login!"), HttpStatus.OK);
+        }
+        Song song = songService.findById(id).get();
+        if (song == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         songService.deleteById(id);
         return new ResponseEntity<>(new ResponeMessage("Done Delete!"),HttpStatus.OK);
@@ -244,6 +249,12 @@ public class SongController {
         Song song = songService.findById(idSong).get();
         List<Comment> list = song.getCommentList();
         return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
+    @GetMapping ("/search/{searchKey}")
+    public ResponseEntity<?> findSongByNameOrSinger(@PathVariable("searchKey") String name,Pageable pageable) {
+        List<Song> songList= songService.findSongsBySingerNameorSongName(name, pageable).getContent();
+        return new ResponseEntity<>(songList, HttpStatus.OK);
     }
 }
 
