@@ -20,8 +20,20 @@ public class JwtResponse {
     public JwtResponse() {
     }
 
+    public JwtResponse(String token, String type, String username, String fullname, String avatar, String address, String email, String phoneNumber, Collection<? extends GrantedAuthority> roles) {
+        this.token = token;
+        this.type = type;
+        this.username = username;
+        this.fullname = fullname;
+        this.avatar = avatar;
+        this.address = address;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.roles = roles;
+    }
 
-    public JwtResponse(Long id, String token, String username,String fullname, String avatar,String address,String email,String  phoneNumber, Collection<? extends GrantedAuthority> authorities) {
+
+    public JwtResponse(Long id, String token, String username, String fullname, String avatar, String address, String email, String phoneNumber, Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.token = token;
         this.username = username;

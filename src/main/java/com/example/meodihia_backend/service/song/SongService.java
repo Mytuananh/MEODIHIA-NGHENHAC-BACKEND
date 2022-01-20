@@ -14,7 +14,14 @@ import java.util.Optional;
 public class SongService implements ISongService{
     @Autowired
     private ISongRepository songRepository;
+
     @Override
+    public Iterable<Song> findAllByUser_Id(Long id) {
+        return  songRepository.findAllByUser_Id(id);
+    }
+
+    @Override
+
     public List<Song> findAll() {
         return songRepository.findAll();
     }
